@@ -5,11 +5,13 @@
         <title>@ViewBag.Title - My ASP.NET MVC Application</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Styles/css")
         @Scripts.Render("~/bundles/modernizr")
     </head>
     <body>
-        <header>
+        <input id="fileupload" type="file" name="files[]" />
+
+        <!-- <header>
             <div class="content-wrapper">
                 <div class="float-left">
                     <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
@@ -40,9 +42,23 @@
                     <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
                 </div>
             </div>
-        </footer>
+        </footer> -->
 
         @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryfileupload")
         @RenderSection("scripts", required: false)
+        <script>
+            $(function () {
+                $('#fileupload').fileupload({
+                    dataType: 'json',
+                    url: 'server/',
+                    done: function (e, data) {
+                        $.each(data.result.files, function (index, file) {
+                            $('<p/>').text(file.name).appendTo(document.body);
+                        });
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
