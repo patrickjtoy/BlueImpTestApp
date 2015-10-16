@@ -50,12 +50,20 @@
         <script>
             $(function () {
                 $('#fileupload').fileupload({
+                    method: 'PUT',
                     dataType: 'json',
-                    url: 'server/',
+                    url: '/api/Files',
                     done: function (e, data) {
                         $.each(data.result.files, function (index, file) {
                             $('<p/>').text(file.name).appendTo(document.body);
                         });
+                    },
+                    progress: function (e, data) {
+                        if (e.isDefaultPrevented()) {
+                            return false;
+                        }
+                        var progress = Math.floor(data.loaded / data.total * 100);
+                        console.log(progress);
                     }
                 });
             });
